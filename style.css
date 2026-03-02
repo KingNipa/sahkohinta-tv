@@ -37,7 +37,7 @@ body {
 
 .slot {
   margin: 0;
-  font-size: 3.4vw;
+  font-size: 4.4vw;
   font-weight: 600;
   color: var(--text-subtle);
 }
@@ -47,12 +47,12 @@ body {
   font-weight: 800;
   letter-spacing: 0.02em;
   line-height: 0.95;
-  font-size: 16vw;
+  font-size: 21vw;
 }
 
 .unit {
   margin: 0.6vh 0 0;
-  font-size: 2.7vw;
+  font-size: 3.5vw;
   color: var(--text-subtle);
 }
 
@@ -73,26 +73,26 @@ body {
 
 .summary-title {
   margin: 0;
-  font-size: 2.1vw;
+  font-size: 2.7vw;
   font-weight: 700;
 }
 
 .summary-time {
   margin: 0.3vh 0 0;
-  font-size: 1.75vw;
+  font-size: 2.3vw;
   color: var(--text-subtle);
 }
 
 .summary-value {
   margin: 0.4vh 0 0;
-  font-size: 3.3vw;
+  font-size: 4.3vw;
   font-weight: 800;
   line-height: 1.05;
 }
 
 .summary-unit {
   margin: 0.15vh 0 0;
-  font-size: 1.7vw;
+  font-size: 2.2vw;
   color: var(--text-subtle);
 }
 
@@ -121,31 +121,31 @@ body {
 
 @media (min-width: 1700px) {
   .slot {
-    font-size: 58px;
+    font-size: 75px;
   }
 
   .price {
-    font-size: 260px;
+    font-size: 338px;
   }
 
   .unit {
-    font-size: 44px;
+    font-size: 57px;
   }
 
   .summary-title {
-    font-size: 32px;
+    font-size: 42px;
   }
 
   .summary-time {
-    font-size: 28px;
+    font-size: 36px;
   }
 
   .summary-value {
-    font-size: 52px;
+    font-size: 68px;
   }
 
   .summary-unit {
-    font-size: 28px;
+    font-size: 36px;
   }
 
   .updated,
@@ -160,15 +160,15 @@ body {
   }
 
   .slot {
-    font-size: 7vw;
+    font-size: 9.1vw;
   }
 
   .price {
-    font-size: 25vw;
+    font-size: 32.5vw;
   }
 
   .unit {
-    font-size: 6vw;
+    font-size: 7.8vw;
   }
 
   .summary-row {
@@ -178,19 +178,19 @@ body {
   }
 
   .summary-title {
-    font-size: 6vw;
+    font-size: 7.8vw;
   }
 
   .summary-time {
-    font-size: 5vw;
+    font-size: 6.5vw;
   }
 
   .summary-value {
-    font-size: 10vw;
+    font-size: 13vw;
   }
 
   .summary-unit {
-    font-size: 5vw;
+    font-size: 6.5vw;
   }
 
   .updated,
