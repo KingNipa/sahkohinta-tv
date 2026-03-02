@@ -412,8 +412,8 @@ function renderNoDataChart() {
   }
 
   clearSvg(chartSvgEl);
-  chartSvgEl.setAttribute("viewBox", "0 0 1720 860");
-  appendSvgText(chartSvgEl, 860, 430, "axis-label", "Ei hintadataa", "middle");
+  chartSvgEl.setAttribute("viewBox", "0 0 1840 900");
+  appendSvgText(chartSvgEl, 920, 450, "axis-label", "Ei hintadataa", "middle");
 }
 
 function renderChart(record) {
@@ -428,12 +428,12 @@ function renderChart(record) {
 
   clearSvg(chartSvgEl);
 
-  var width = 1720;
-  var height = 860;
-  var marginLeft = 108;
-  var marginRight = 26;
-  var marginTop = 66;
-  var marginBottom = 118;
+  var width = 1840;
+  var height = 900;
+  var marginLeft = 92;
+  var marginRight = 12;
+  var marginTop = 42;
+  var marginBottom = 100;
   var plotWidth = width - marginLeft - marginRight;
   var plotHeight = height - marginTop - marginBottom;
 
@@ -504,18 +504,18 @@ function renderChart(record) {
 
     appendSvgText(
       chartSvgEl,
-      marginLeft - 16,
-      y + 11,
+      marginLeft - 14,
+      y + 12,
       "y-label",
       formatAxisTick(tick),
       "end"
     );
   }
 
-  appendSvgText(chartSvgEl, marginLeft - 86, marginTop - 18, "axis-label", "c/kWh", "start");
+  appendSvgText(chartSvgEl, marginLeft - 72, marginTop - 12, "axis-label", "c/kWh", "start");
 
   var slotWidth = plotWidth / 24;
-  var barWidth = slotWidth * 0.9;
+  var barWidth = slotWidth * 0.95;
   var currentHour = new Date().getHours();
 
   for (i = 0; i < 24; i += 1) {
@@ -564,7 +564,7 @@ function renderChart(record) {
     appendSvgText(
       chartSvgEl,
       marginLeft + i * slotWidth + slotWidth / 2,
-      height - 30,
+      height - 24,
       xLabelClass,
       String(i),
       "middle"

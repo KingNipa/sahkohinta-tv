@@ -22,7 +22,7 @@ body {
 
 body {
   min-height: 100vh;
-  padding: 3vh 4vw 11vh;
+  padding: 2vh 2.6vw 7.2vh;
   background: radial-gradient(circle at 20% 20%, var(--bg-2), var(--bg-1) 60%);
   color: var(--text-main);
   font-family: "Segoe UI", Tahoma, Arial, sans-serif;
@@ -30,7 +30,7 @@ body {
 
 .app {
   width: 100%;
-  max-width: 1600px;
+  max-width: 1860px;
   margin: 0 auto;
   text-align: center;
 }
@@ -41,7 +41,7 @@ body {
 
 .slot {
   margin: 0;
-  font-size: 4.4vw;
+  font-size: 4.8vw;
   font-weight: 600;
   color: var(--text-subtle);
 }
@@ -51,25 +51,25 @@ body {
   font-weight: 800;
   letter-spacing: 0.02em;
   line-height: 0.95;
-  font-size: 21vw;
+  font-size: 22.5vw;
 }
 
 .unit {
   margin: 0.6vh 0 0;
-  font-size: 3.5vw;
+  font-size: 3.8vw;
   color: var(--text-subtle);
 }
 
 .summary-row {
-  margin-top: 5.5vh;
+  margin-top: 4.2vh;
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1.8vw;
+  gap: 1.4vw;
   text-align: left;
 }
 
 .summary-card {
-  padding: 1.5vh 1.3vw;
+  padding: 1.25vh 1.15vw;
   border-radius: 14px;
   background: var(--card-bg);
   border: 1px solid var(--card-border);
@@ -77,26 +77,26 @@ body {
 
 .summary-title {
   margin: 0;
-  font-size: 2.7vw;
+  font-size: 2.9vw;
   font-weight: 700;
 }
 
 .summary-time {
   margin: 0.3vh 0 0;
-  font-size: 2.3vw;
+  font-size: 2.45vw;
   color: var(--text-subtle);
 }
 
 .summary-value {
   margin: 0.4vh 0 0;
-  font-size: 4.3vw;
+  font-size: 4.7vw;
   font-weight: 800;
   line-height: 1.05;
 }
 
 .summary-unit {
   margin: 0.15vh 0 0;
-  font-size: 2.2vw;
+  font-size: 2.35vw;
   color: var(--text-subtle);
 }
 
@@ -109,9 +109,9 @@ body {
   align-items: center;
   justify-content: center;
   gap: 2.6vw;
-  margin-top: 0.5vh;
-  margin-bottom: 1.2vh;
-  font-size: 1.8vw;
+  margin-top: 0.3vh;
+  margin-bottom: 0.7vh;
+  font-size: 1.95vw;
   font-weight: 700;
   color: var(--text-subtle);
 }
@@ -147,13 +147,13 @@ body {
   border-radius: 14px;
   border: 1px solid var(--card-border);
   background: var(--card-bg);
-  padding: 0.8vh 0.4vw;
+  padding: 0.35vh 0.2vw;
 }
 
 .chart-svg {
   display: block;
   width: 100%;
-  height: 69vh;
+  height: 76vh;
 }
 
 .chart-svg .grid-line {
@@ -163,18 +163,18 @@ body {
 
 .chart-svg .axis-label {
   fill: #f3f8ff;
-  font-size: 40px;
+  font-size: 44px;
   font-weight: 700;
 }
 
 .chart-svg .y-label {
   fill: #dbe6f5;
-  font-size: 34px;
+  font-size: 38px;
 }
 
 .chart-svg .x-label {
   fill: #dbe6f5;
-  font-size: 32px;
+  font-size: 36px;
 }
 
 .chart-svg .x-label-now {
@@ -209,7 +209,7 @@ body {
   bottom: 2.4vh;
   transform: translateX(-50%);
   margin: 0;
-  font-size: 1.3vw;
+  font-size: 1.2vw;
   color: var(--text-subtle);
   opacity: 0.9;
 }
@@ -239,51 +239,51 @@ body {
 
 @media (min-width: 1700px) {
   .slot {
-    font-size: 75px;
+    font-size: 82px;
   }
 
   .price {
-    font-size: 338px;
+    font-size: 370px;
   }
 
   .unit {
-    font-size: 57px;
+    font-size: 62px;
   }
 
   .summary-title {
-    font-size: 42px;
+    font-size: 46px;
   }
 
   .summary-time {
-    font-size: 36px;
+    font-size: 39px;
   }
 
   .summary-value {
-    font-size: 68px;
+    font-size: 74px;
   }
 
   .summary-unit {
-    font-size: 36px;
+    font-size: 39px;
   }
 
   .chart-legend {
-    font-size: 30px;
+    font-size: 33px;
   }
 
   .chart-svg .axis-label {
-    font-size: 44px;
+    font-size: 48px;
   }
 
   .chart-svg .y-label {
-    font-size: 37px;
+    font-size: 41px;
   }
 
   .chart-svg .x-label {
-    font-size: 34px;
+    font-size: 39px;
   }
 
   .nav-help {
-    font-size: 22px;
+    font-size: 23px;
   }
 
   .updated,
@@ -294,41 +294,41 @@ body {
 
 @media (max-width: 900px) {
   body {
-    padding: 3.4vh 5vw;
+    padding: 2.6vh 4vw;
   }
 
   .slot {
-    font-size: 9.1vw;
+    font-size: 9.8vw;
   }
 
   .price {
-    font-size: 32.5vw;
+    font-size: 35vw;
   }
 
   .unit {
-    font-size: 7.8vw;
+    font-size: 8.4vw;
   }
 
   .summary-row {
-    margin-top: 4.5vh;
+    margin-top: 3.6vh;
     grid-template-columns: 1fr;
     gap: 1.4vh;
   }
 
   .summary-title {
-    font-size: 7.8vw;
+    font-size: 8.4vw;
   }
 
   .summary-time {
-    font-size: 6.5vw;
+    font-size: 6.9vw;
   }
 
   .summary-value {
-    font-size: 13vw;
+    font-size: 14.2vw;
   }
 
   .summary-unit {
-    font-size: 6.5vw;
+    font-size: 6.9vw;
   }
 
   .chart-legend {
@@ -346,24 +346,24 @@ body {
   }
 
   .chart-wrap {
-    margin-top: 1.3vh;
-    padding: 1vh 1.2vw;
+    margin-top: 0.8vh;
+    padding: 0.8vh 0.8vw;
   }
 
   .chart-svg {
-    height: 54vh;
+    height: 58vh;
   }
 
   .chart-svg .axis-label {
-    font-size: 58px;
+    font-size: 62px;
   }
 
   .chart-svg .y-label {
-    font-size: 50px;
+    font-size: 54px;
   }
 
   .chart-svg .x-label {
-    font-size: 44px;
+    font-size: 48px;
   }
 
   .nav-help {
