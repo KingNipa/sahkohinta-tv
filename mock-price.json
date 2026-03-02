@@ -1,4 +1,29 @@
 {
-  "centsPerKwh": 12.34,
-  "updatedAt": "2026-03-02T10:30:00+02:00"
+  "updatedAt": "2026-03-02T12:40:00+02:00",
+  "hourlyPrices": [
+    { "hour": 0, "centsPerKwh": 8.5 },
+    { "hour": 1, "centsPerKwh": 7.2 },
+    { "hour": 2, "centsPerKwh": 6.13 },
+    { "hour": 3, "centsPerKwh": 6.8 },
+    { "hour": 4, "centsPerKwh": 7.1 },
+    { "hour": 5, "centsPerKwh": 8.0 },
+    { "hour": 6, "centsPerKwh": 9.4 },
+    { "hour": 7, "centsPerKwh": 10.2 },
+    { "hour": 8, "centsPerKwh": 11.0 },
+    { "hour": 9, "centsPerKwh": 12.3 },
+    { "hour": 10, "centsPerKwh": 13.8 },
+    { "hour": 11, "centsPerKwh": 14.6 },
+    { "hour": 12, "centsPerKwh": 15.1 },
+    { "hour": 13, "centsPerKwh": 14.2 },
+    { "hour": 14, "centsPerKwh": 13.5 },
+    { "hour": 15, "centsPerKwh": 12.7 },
+    { "hour": 16, "centsPerKwh": 12.1 },
+    { "hour": 17, "centsPerKwh": 13.9 },
+    { "hour": 18, "centsPerKwh": 16.2 },
+    { "hour": 19, "centsPerKwh": 18.62 },
+    { "hour": 20, "centsPerKwh": 17.5 },
+    { "hour": 21, "centsPerKwh": 14.4 },
+    { "hour": 22, "centsPerKwh": 11.6 },
+    { "hour": 23, "centsPerKwh": 9.3 }
+  ]
 }

@@ -12,10 +12,36 @@
 </head>
 <body>
   <main class="app" role="main" aria-live="polite">
-    <h1 class="price" id="priceText">NYT: --.- snt/kWh</h1>
-    <p class="updated" id="updatedText">P&auml;ivitetty: --:--</p>
-    <p class="status" id="statusText">Yhteys OK</p>
+    <p class="slot" id="slotText">klo -- - --: hinta</p>
+    <h1 class="price" id="priceText">--,--</h1>
+    <p class="unit">snt/kWh</p>
+
+    <section class="summary-row" aria-label="P&auml;iv&auml;n yhteenveto">
+      <article class="summary-card">
+        <h2 class="summary-title">Halvin hinta</h2>
+        <p class="summary-time" id="minHourText">klo -- - --</p>
+        <p class="summary-value" id="minValueText">--,--</p>
+        <p class="summary-unit">snt/kWh</p>
+      </article>
+
+      <article class="summary-card">
+        <h2 class="summary-title">Kallein hinta</h2>
+        <p class="summary-time" id="maxHourText">klo -- - --</p>
+        <p class="summary-value" id="maxValueText">--,--</p>
+        <p class="summary-unit">snt/kWh</p>
+      </article>
+
+      <article class="summary-card">
+        <h2 class="summary-title">Keskihinta</h2>
+        <p class="summary-time">t&auml;n&auml;&auml;n</p>
+        <p class="summary-value" id="avgValueText">--,--</p>
+        <p class="summary-unit">snt/kWh</p>
+      </article>
+    </section>
   </main>
+
+  <p class="updated" id="updatedText">P&auml;ivitetty: --:--</p>
+  <p class="status" id="statusText">Yhteys OK</p>
 
   <script src="./app.js"></script>
 </body>
