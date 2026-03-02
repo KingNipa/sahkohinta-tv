@@ -6,7 +6,6 @@ var state = { lastData: null };
 var priceEl = document.getElementById("priceText");
 var updatedEl = document.getElementById("updatedText");
 var statusEl = document.getElementById("statusText");
-var refreshBtn = document.getElementById("refreshBtn");
 
 function twoDigits(value) {
   return value < 10 ? "0" + value : String(value);
@@ -29,6 +28,10 @@ function formatTime(isoString) {
   return twoDigits(date.getHours()) + ":" + twoDigits(date.getMinutes());
 }
 
+function isValidIso(isoString) {
+  return typeof isoString === "string" && !isNaN(new Date(isoString).getTime());
+}
+
 function isValidData(data) {
   if (!data || typeof data !== "object") {
     return false;
@@ -38,11 +41,15 @@ function isValidData(data) {
     return false;
   }
 
-  if (typeof data.updatedAt !== "string") {
-    return false;
+  return isValidIso(data.updatedAt);
+}
+
+function getDisplayUpdatedAt(data) {
+  if (data && isValidIso(data.fetchedAt)) {
+    return data.fetchedAt;
   }
 
-  return !isNaN(new Date(data.updatedAt).getTime());
+  return data.updatedAt;
 }
 
 function setStatus(isConnected) {
@@ -50,14 +57,22 @@ function setStatus(isConnected) {
     statusEl.textContent = "Yhteys OK";
     statusEl.setAttribute("data-state", "ok");
   } else {
-    statusEl.textContent = "Ei yhteyttä – näytetään viimeisin arvo";
+    statusEl.textContent = "Ei yhteytt\u00e4 - n\u00e4ytet\u00e4\u00e4n viimeisin arvo";
     statusEl.setAttribute("data-state", "offline");
   }
 }
 
 function renderValue(data) {
   priceEl.textContent = "NYT: " + formatCents(data.centsPerKwh) + " snt/kWh";
-  updatedEl.textContent = "Päivitetty: " + formatTime(data.updatedAt);
+  updatedEl.textContent = "P\u00e4ivitetty: " + formatTime(getDisplayUpdatedAt(data));
+}
+
+function toRecord(payload) {
+  return {
+    centsPerKwh: payload.centsPerKwh,
+    updatedAt: payload.updatedAt,
+    fetchedAt: new Date().toISOString()
+  };
 }
 
 function saveToCache(data) {
@@ -84,10 +99,6 @@ function loadFromCache() {
 }
 
 function fetchLatest() {
-  if (refreshBtn) {
-    refreshBtn.disabled = true;
-  }
-
   return fetch(CONFIG.endpoint, { cache: "no-store" })
     .then(function (response) {
       if (!response.ok) {
@@ -101,9 +112,10 @@ function fetchLatest() {
         throw new Error("Invalid payload");
       }
 
-      state.lastData = payload;
-      renderValue(payload);
-      saveToCache(payload);
+      var record = toRecord(payload);
+      state.lastData = record;
+      renderValue(record);
+      saveToCache(record);
       setStatus(true);
     })
     .catch(function () {
@@ -112,11 +124,6 @@ function fetchLatest() {
       }
 
       setStatus(false);
-    })
-    .then(function () {
-      if (refreshBtn) {
-        refreshBtn.disabled = false;
-      }
     });
 }
 
@@ -131,10 +138,6 @@ function init() {
 
   fetchLatest();
   setInterval(fetchLatest, CONFIG.refreshMs);
-
-  if (refreshBtn) {
-    refreshBtn.addEventListener("click", fetchLatest);
-  }
 }
 
 init();

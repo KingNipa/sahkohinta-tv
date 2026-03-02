@@ -6,8 +6,6 @@
   --text-subtle: #b7c3d3;
   --status-ok: #7bd88f;
   --status-offline: #ffb86b;
-  --button-bg: #3a78ff;
-  --button-bg-active: #2758c8;
 }
 
 * {
@@ -52,38 +50,13 @@ body {
 }
 
 .status {
-  margin: 0 0 3.5vh;
+  margin: 0;
   font-size: 2.5vw;
   color: var(--status-ok);
 }
 
 .status[data-state="offline"] {
   color: var(--status-offline);
-}
-
-.refresh-button {
-  appearance: none;
-  border: 0;
-  border-radius: 14px;
-  padding: 1.05em 1.5em;
-  min-width: 300px;
-  font-size: 2.4vw;
-  font-weight: 700;
-  color: #ffffff;
-  background: var(--button-bg);
-}
-
-.refresh-button:active {
-  background: var(--button-bg-active);
-}
-
-.refresh-button:focus {
-  outline: 4px solid rgba(255, 255, 255, 0.3);
-  outline-offset: 4px;
-}
-
-.refresh-button:disabled {
-  opacity: 0.65;
 }
 
 @media (min-width: 1700px) {
@@ -98,10 +71,6 @@ body {
   .status {
     font-size: 38px;
   }
-
-  .refresh-button {
-    font-size: 36px;
-  }
 }
 
 @media (max-width: 900px) {
@@ -115,10 +84,5 @@ body {
 
   .status {
     font-size: 4.8vw;
-  }
-
-  .refresh-button {
-    min-width: 70vw;
-    font-size: 5vw;
   }
 }

@@ -1,14 +1,14 @@
 # sahkohinta-tv
 
-Superyksinkertainen TV-näkymä sähkön hinnalle (snt/kWh), tehty ilman frameworkeja Samsung Smart TV -selainta varten.
+Superyksinkertainen TV-nakyma sahkon hinnalle (snt/kWh), tehty ilman frameworkeja Samsung Smart TV -selainta varten.
 
 ## Tiedostot
 
-- `index.html` - näkymän rakenne
-- `style.css` - TV-ystävällinen ulkoasu
-- `app.js` - datan haku, automaattinen päivitys, localStorage-välimuisti
+- `index.html` - nakyman rakenne
+- `style.css` - TV-ystavallinen ulkoasu
+- `app.js` - datan haku, automaattinen paivitys, localStorage-valimuisti
 - `mock-price.json` - paikallinen mock-data
-- `icon.svg` - kuvake selaimen bookmark/shortcut-käyttöön
+- `icon.svg` - kuvake selaimen bookmark/shortcut-kayttoon
 
 ## Paikallinen ajo
 
@@ -16,7 +16,7 @@ Superyksinkertainen TV-näkymä sähkön hinnalle (snt/kWh), tehty ilman framewo
    ```bash
    cd sahkohinta-tv
    ```
-2. Käynnistä staattinen palvelin (esim. Python):
+2. Kaynnista staattinen palvelin (esim. Python):
    ```bash
    python -m http.server 8080
    ```
@@ -34,24 +34,25 @@ Superyksinkertainen TV-näkymä sähkön hinnalle (snt/kWh), tehty ilman framewo
    - `Branch`: `main`
    - `Folder`: `/ (root)`
 4. Tallenna ja odota julkaisu valmis.
-5. Sovellus löytyy osoitteesta:
+5. Sovellus loytyy osoitteesta:
    ```
    https://<username>.github.io/<repo>/
    ```
 
-## Samsung Smart TV -käyttö
+## Samsung Smart TV -kaytto
 
 1. Avaa TV:n selaimella julkaistu GitHub Pages -osoite.
-2. Lisää sivu kirjanmerkiksi / aloitusnäytön pikakuvakkeeksi selaimen valikosta.
-3. Kuvakkeena käytetään tiedostoa `icon.svg`.
+2. Lisaa sivu kirjanmerkiksi / aloitusnayton pikakuvakkeeksi selaimen valikosta.
+3. Kuvakkeena kaytetaan tiedostoa `icon.svg`.
 
 ## Toiminta
 
 - Hakee hinnan heti sivun latauksessa.
-- Päivittää automaattisesti 10 minuutin välein.
-- Painike `Päivitä nyt` käynnistää haun heti.
-- Jos yhteys epäonnistuu, viimeisin onnistunut arvo pidetään näkyvissä.
-- Viimeisin onnistunut arvo tallennetaan `localStorage`en, joten arvo säilyy sivun uudelleenlatauksessa.
+- Paivittaa automaattisesti 10 minuutin valein.
+- Jos yhteys epaonnistuu, viimeisin onnistunut arvo pidetaan nakyvissa.
+- Viimeisin onnistunut arvo tallennetaan `localStorage`en, joten arvo sailyy sivun uudelleenlatauksessa.
+- `Paivitetty` nayttaa viimeisimman onnistuneen haun kellonajan (selaimen paikallinen aika).
+- Mock-tiedoston `updatedAt` on staattinen esimerkkiaikaleima; siksi pelkka payloadin aika voi nayttaa vanhalta.
 - Endpoint on konfiguroitavissa `app.js`-tiedoston alussa:
   ```js
   const CONFIG = { endpoint: "./mock-price.json", refreshMs: 600000 };
