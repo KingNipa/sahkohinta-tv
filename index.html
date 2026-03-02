@@ -12,34 +12,48 @@
 </head>
 <body>
   <main class="app" role="main" aria-live="polite">
-    <p class="slot" id="slotText">klo -- - --: hinta</p>
-    <h1 class="price" id="priceText">--,--</h1>
-    <p class="unit">snt/kWh</p>
+    <section class="view view-main" id="mainView">
+      <p class="slot" id="slotText">klo -- - --: hinta</p>
+      <h1 class="price" id="priceText">--,--</h1>
+      <p class="unit">snt/kWh</p>
 
-    <section class="summary-row" aria-label="P&auml;iv&auml;n yhteenveto">
-      <article class="summary-card">
-        <h2 class="summary-title">Halvin hinta</h2>
-        <p class="summary-time" id="minHourText">klo -- - --</p>
-        <p class="summary-value" id="minValueText">--,--</p>
-        <p class="summary-unit">snt/kWh</p>
-      </article>
+      <section class="summary-row" aria-label="P&auml;iv&auml;n yhteenveto">
+        <article class="summary-card">
+          <h2 class="summary-title">Halvin hinta</h2>
+          <p class="summary-time" id="minHourText">klo -- - --</p>
+          <p class="summary-value" id="minValueText">--,--</p>
+          <p class="summary-unit">snt/kWh</p>
+        </article>
 
-      <article class="summary-card">
-        <h2 class="summary-title">Kallein hinta</h2>
-        <p class="summary-time" id="maxHourText">klo -- - --</p>
-        <p class="summary-value" id="maxValueText">--,--</p>
-        <p class="summary-unit">snt/kWh</p>
-      </article>
+        <article class="summary-card">
+          <h2 class="summary-title">Kallein hinta</h2>
+          <p class="summary-time" id="maxHourText">klo -- - --</p>
+          <p class="summary-value" id="maxValueText">--,--</p>
+          <p class="summary-unit">snt/kWh</p>
+        </article>
 
-      <article class="summary-card">
-        <h2 class="summary-title">Keskihinta</h2>
-        <p class="summary-time">t&auml;n&auml;&auml;n</p>
-        <p class="summary-value" id="avgValueText">--,--</p>
-        <p class="summary-unit">snt/kWh</p>
-      </article>
+        <article class="summary-card">
+          <h2 class="summary-title">Keskihinta</h2>
+          <p class="summary-time">t&auml;n&auml;&auml;n</p>
+          <p class="summary-value" id="avgValueText">--,--</p>
+          <p class="summary-unit">snt/kWh</p>
+        </article>
+      </section>
+    </section>
+
+    <section class="view view-chart" id="chartView" hidden aria-hidden="true">
+      <div class="chart-legend" aria-label="Kaavion selite">
+        <span class="legend-item"><span class="legend-dot legend-dot-min"></span>Halvin</span>
+        <span class="legend-item"><span class="legend-dot legend-dot-max"></span>Kallein</span>
+        <span class="legend-item"><span class="legend-dot legend-dot-now"></span>Nyt</span>
+      </div>
+      <div class="chart-wrap">
+        <svg class="chart-svg" id="chartSvg" role="img" aria-label="P&auml;iv&auml;n hintakaavio"></svg>
+      </div>
     </section>
   </main>
 
+  <p class="nav-help">Nuolin&auml;pp&auml;in vaihtaa n&auml;kym&auml;&auml;</p>
   <p class="updated" id="updatedText">P&auml;ivitetty: --:--</p>
   <p class="status" id="statusText">Yhteys OK</p>
 

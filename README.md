@@ -11,6 +11,16 @@ Sovellus on tehty mahdollisimman selkeäksi ja helposti luettavaksi ilman framew
 - vasemmassa alanurkassa `Päivitetty: HH:MM`
 - oikeassa alanurkassa yhteystila (`Yhteys OK` / `Ei yhteyttä - näytetään viimeisin arvo`)
 
+## Näkymän vaihto kaukosäätimellä
+
+- paina mitä tahansa nuolinäppäintä (`↑ ↓ ← →`) vaihtaaksesi näkymää
+- seuraava nuolinäppäin palauttaa takaisin
+- kaavionäkymässä:
+  - halvin tunti näytetään vihreällä
+  - kallein tunti näytetään punaisella
+  - nykyinen tunti on korostettu
+  - akselien numerot on tehty tavallista isommiksi
+
 ## Datalähde
 
 Oletuksena data haetaan suoraan julkisesta API:sta:
@@ -32,7 +42,7 @@ Oletuksena data haetaan suoraan julkisesta API:sta:
 
 - `index.html` - näkymän rakenne
 - `style.css` - TV:lle suunniteltu ulkoasu
-- `app.js` - datan haku, muunnokset, välimuisti, päivityslogiikka
+- `app.js` - datan haku, muunnokset, välimuisti, päivityslogiikka ja kaaviorenderöinti
 - `mock-price.json` - paikallinen mock-data kehitykseen
 - `icon.svg` - kuvake kirjanmerkkiä / pikakuvaketta varten
 

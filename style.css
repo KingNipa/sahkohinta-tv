@@ -35,6 +35,10 @@ body {
   text-align: center;
 }
 
+.view[hidden] {
+  display: none;
+}
+
 .slot {
   margin: 0;
   font-size: 4.4vw;
@@ -96,6 +100,120 @@ body {
   color: var(--text-subtle);
 }
 
+.view-chart {
+  text-align: left;
+}
+
+.chart-legend {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2.6vw;
+  margin-top: 0.5vh;
+  margin-bottom: 1.2vh;
+  font-size: 1.8vw;
+  font-weight: 700;
+  color: var(--text-subtle);
+}
+
+.legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55vw;
+}
+
+.legend-dot {
+  width: 1vw;
+  height: 1vw;
+  min-width: 12px;
+  min-height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.legend-dot-min {
+  background: #4fb86b;
+}
+
+.legend-dot-max {
+  background: #e15b5b;
+}
+
+.legend-dot-now {
+  background: #f1c86f;
+}
+
+.chart-wrap {
+  border-radius: 14px;
+  border: 1px solid var(--card-border);
+  background: var(--card-bg);
+  padding: 0.8vh 0.4vw;
+}
+
+.chart-svg {
+  display: block;
+  width: 100%;
+  height: 69vh;
+}
+
+.chart-svg .grid-line {
+  stroke: rgba(255, 255, 255, 0.16);
+  stroke-width: 1;
+}
+
+.chart-svg .axis-label {
+  fill: #f3f8ff;
+  font-size: 40px;
+  font-weight: 700;
+}
+
+.chart-svg .y-label {
+  fill: #dbe6f5;
+  font-size: 34px;
+}
+
+.chart-svg .x-label {
+  fill: #dbe6f5;
+  font-size: 32px;
+}
+
+.chart-svg .x-label-now {
+  fill: #f1c86f;
+  font-weight: 700;
+}
+
+.chart-svg .bar {
+  fill: #5f72b5;
+}
+
+.chart-svg .bar-missing {
+  fill: rgba(255, 255, 255, 0.12);
+}
+
+.chart-svg .bar-min {
+  fill: #4fb86b;
+}
+
+.chart-svg .bar-max {
+  fill: #e15b5b;
+}
+
+.chart-svg .bar-now {
+  stroke: #f1c86f;
+  stroke-width: 8;
+}
+
+.nav-help {
+  position: fixed;
+  left: 50%;
+  bottom: 2.4vh;
+  transform: translateX(-50%);
+  margin: 0;
+  font-size: 1.3vw;
+  color: var(--text-subtle);
+  opacity: 0.9;
+}
+
 .updated,
 .status {
   position: fixed;
@@ -148,6 +266,26 @@ body {
     font-size: 36px;
   }
 
+  .chart-legend {
+    font-size: 30px;
+  }
+
+  .chart-svg .axis-label {
+    font-size: 44px;
+  }
+
+  .chart-svg .y-label {
+    font-size: 37px;
+  }
+
+  .chart-svg .x-label {
+    font-size: 34px;
+  }
+
+  .nav-help {
+    font-size: 22px;
+  }
+
   .updated,
   .status {
     font-size: 22px;
@@ -191,6 +329,49 @@ body {
 
   .summary-unit {
     font-size: 6.5vw;
+  }
+
+  .chart-legend {
+    gap: 6vw;
+    font-size: 5.8vw;
+  }
+
+  .legend-item {
+    gap: 2vw;
+  }
+
+  .legend-dot {
+    width: 3.4vw;
+    height: 3.4vw;
+  }
+
+  .chart-wrap {
+    margin-top: 1.3vh;
+    padding: 1vh 1.2vw;
+  }
+
+  .chart-svg {
+    height: 54vh;
+  }
+
+  .chart-svg .axis-label {
+    font-size: 58px;
+  }
+
+  .chart-svg .y-label {
+    font-size: 50px;
+  }
+
+  .chart-svg .x-label {
+    font-size: 44px;
+  }
+
+  .nav-help {
+    position: static;
+    transform: none;
+    font-size: 4.8vw;
+    text-align: center;
+    margin-top: 0.8vh;
   }
 
   .updated,

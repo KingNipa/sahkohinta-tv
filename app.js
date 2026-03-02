@@ -4,8 +4,12 @@ var CONFIG = {
   uiTickMs: 30000
 };
 
-var STORAGE_KEY = "sahkohinta_tv_last_success_v3";
-var state = { lastData: null };
+var STORAGE_KEY = "sahkohinta_tv_last_success_v4";
+var state = { lastData: null, viewMode: "main" };
+
+var mainViewEl = document.getElementById("mainView");
+var chartViewEl = document.getElementById("chartView");
+var chartSvgEl = document.getElementById("chartSvg");
 
 var slotEl = document.getElementById("slotText");
 var priceEl = document.getElementById("priceText");
@@ -42,6 +46,16 @@ function formatTime(isoString) {
 function formatHourRange(hour) {
   var endHour = (hour + 1) % 24;
   return "klo " + twoDigits(hour) + " - " + twoDigits(endHour);
+}
+
+function formatAxisTick(value) {
+  var rounded = Math.round(value);
+  var isInteger = Math.abs(value - rounded) < 0.001;
+
+  return value.toLocaleString("fi-FI", {
+    minimumFractionDigits: isInteger ? 0 : 1,
+    maximumFractionDigits: isInteger ? 0 : 1
+  });
 }
 
 function getTimeMs(isoString) {
@@ -333,6 +347,239 @@ function renderRecord(record) {
   avgValueEl.textContent = formatCents(summary.avgPrice);
 }
 
+function clearSvg(svg) {
+  while (svg.firstChild) {
+    svg.removeChild(svg.firstChild);
+  }
+}
+
+function createSvgElement(name, className) {
+  var node = document.createElementNS("http://www.w3.org/2000/svg", name);
+
+  if (className) {
+    node.setAttribute("class", className);
+  }
+
+  return node;
+}
+
+function setSvgAttributes(node, attrs) {
+  var keys = Object.keys(attrs);
+  var i;
+
+  for (i = 0; i < keys.length; i += 1) {
+    node.setAttribute(keys[i], String(attrs[keys[i]]));
+  }
+}
+
+function appendSvgText(parent, x, y, className, textContent, textAnchor) {
+  var textNode = createSvgElement("text", className);
+
+  setSvgAttributes(textNode, {
+    x: x,
+    y: y,
+    "text-anchor": textAnchor || "start"
+  });
+
+  textNode.textContent = textContent;
+  parent.appendChild(textNode);
+}
+
+function getNiceStep(value) {
+  if (!isFiniteNumber(value) || value <= 0) {
+    return 1;
+  }
+
+  var exponent = Math.floor(Math.log(value) / Math.LN10);
+  var magnitude = Math.pow(10, exponent);
+  var normalized = value / magnitude;
+  var niceBase = 1;
+
+  if (normalized > 5) {
+    niceBase = 10;
+  } else if (normalized > 2) {
+    niceBase = 5;
+  } else if (normalized > 1) {
+    niceBase = 2;
+  }
+
+  return niceBase * magnitude;
+}
+
+function renderNoDataChart() {
+  if (!chartSvgEl) {
+    return;
+  }
+
+  clearSvg(chartSvgEl);
+  chartSvgEl.setAttribute("viewBox", "0 0 1720 860");
+  appendSvgText(chartSvgEl, 860, 430, "axis-label", "Ei hintadataa", "middle");
+}
+
+function renderChart(record) {
+  if (!chartSvgEl) {
+    return;
+  }
+
+  if (!record || !record.hourlyPrices || record.hourlyPrices.length === 0) {
+    renderNoDataChart();
+    return;
+  }
+
+  clearSvg(chartSvgEl);
+
+  var width = 1720;
+  var height = 860;
+  var marginLeft = 108;
+  var marginRight = 26;
+  var marginTop = 66;
+  var marginBottom = 118;
+  var plotWidth = width - marginLeft - marginRight;
+  var plotHeight = height - marginTop - marginBottom;
+
+  chartSvgEl.setAttribute("viewBox", "0 0 " + width + " " + height);
+
+  var values = [];
+  var i;
+
+  for (i = 0; i < 24; i += 1) {
+    values.push(null);
+  }
+
+  for (i = 0; i < record.hourlyPrices.length; i += 1) {
+    var row = record.hourlyPrices[i];
+
+    if (row && normalizeHour(row.hour) !== null && isFiniteNumber(row.centsPerKwh)) {
+      values[row.hour] = row.centsPerKwh;
+    }
+  }
+
+  var minHour = -1;
+  var maxHour = -1;
+  var minValue = Infinity;
+  var maxValue = -Infinity;
+
+  for (i = 0; i < 24; i += 1) {
+    if (!isFiniteNumber(values[i])) {
+      continue;
+    }
+
+    if (values[i] < minValue) {
+      minValue = values[i];
+      minHour = i;
+    }
+
+    if (values[i] > maxValue) {
+      maxValue = values[i];
+      maxHour = i;
+    }
+  }
+
+  if (!isFiniteNumber(maxValue)) {
+    renderNoDataChart();
+    return;
+  }
+
+  var step = getNiceStep(maxValue / 5);
+  var axisMax = Math.ceil(maxValue / step) * step;
+
+  if (axisMax < step * 4) {
+    axisMax = step * 4;
+  }
+
+  var tick;
+
+  for (tick = 0; tick <= axisMax + 0.0001; tick += step) {
+    var y = marginTop + plotHeight - (tick / axisMax) * plotHeight;
+    var line = createSvgElement("line", "grid-line");
+
+    setSvgAttributes(line, {
+      x1: marginLeft,
+      y1: y,
+      x2: marginLeft + plotWidth,
+      y2: y
+    });
+
+    chartSvgEl.appendChild(line);
+
+    appendSvgText(
+      chartSvgEl,
+      marginLeft - 16,
+      y + 11,
+      "y-label",
+      formatAxisTick(tick),
+      "end"
+    );
+  }
+
+  appendSvgText(chartSvgEl, marginLeft - 86, marginTop - 18, "axis-label", "c/kWh", "start");
+
+  var slotWidth = plotWidth / 24;
+  var barWidth = slotWidth * 0.9;
+  var currentHour = new Date().getHours();
+
+  for (i = 0; i < 24; i += 1) {
+    var x = marginLeft + i * slotWidth + (slotWidth - barWidth) / 2;
+    var value = values[i];
+    var barHeight = 2;
+    var yTop = marginTop + plotHeight - barHeight;
+    var barClass = "bar";
+
+    if (isFiniteNumber(value)) {
+      barHeight = (value / axisMax) * plotHeight;
+      yTop = marginTop + plotHeight - barHeight;
+    } else {
+      barClass += " bar-missing";
+    }
+
+    if (i === minHour) {
+      barClass += " bar-min";
+    }
+
+    if (i === maxHour) {
+      barClass += " bar-max";
+    }
+
+    if (i === currentHour) {
+      barClass += " bar-now";
+    }
+
+    var rect = createSvgElement("rect", barClass);
+
+    setSvgAttributes(rect, {
+      x: x,
+      y: yTop,
+      width: barWidth,
+      height: barHeight
+    });
+
+    chartSvgEl.appendChild(rect);
+
+    var xLabelClass = "x-label";
+
+    if (i === currentHour) {
+      xLabelClass += " x-label-now";
+    }
+
+    appendSvgText(
+      chartSvgEl,
+      marginLeft + i * slotWidth + slotWidth / 2,
+      height - 30,
+      xLabelClass,
+      String(i),
+      "middle"
+    );
+  }
+}
+
+function renderAll(record) {
+  renderRecord(record);
+
+  if (state.viewMode === "chart") {
+    renderChart(record);
+  }
+}
+
 function saveToCache(record) {
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(record));
@@ -374,13 +621,13 @@ function fetchLatest() {
       }
 
       state.lastData = record;
-      renderRecord(record);
+      renderAll(record);
       saveToCache(record);
       setStatus(true);
     })
     .catch(function () {
       if (state.lastData) {
-        renderRecord(state.lastData);
+        renderAll(state.lastData);
       }
 
       setStatus(false);
@@ -412,20 +659,89 @@ function scheduleRefresh(cachedRecord) {
 function startUiTicker() {
   setInterval(function () {
     if (state.lastData) {
-      renderRecord(state.lastData);
+      renderAll(state.lastData);
     }
   }, CONFIG.uiTickMs);
 }
 
+function setViewMode(mode) {
+  if (mode !== "main" && mode !== "chart") {
+    return;
+  }
+
+  state.viewMode = mode;
+
+  var showMain = mode === "main";
+
+  if (mainViewEl) {
+    mainViewEl.hidden = !showMain;
+    mainViewEl.setAttribute("aria-hidden", showMain ? "false" : "true");
+  }
+
+  if (chartViewEl) {
+    chartViewEl.hidden = showMain;
+    chartViewEl.setAttribute("aria-hidden", showMain ? "true" : "false");
+  }
+
+  if (!showMain) {
+    renderChart(state.lastData);
+  }
+}
+
+function isArrowKeyEvent(event) {
+  if (!event) {
+    return false;
+  }
+
+  var key = event.key;
+
+  if (
+    key === "ArrowLeft" ||
+    key === "ArrowRight" ||
+    key === "ArrowUp" ||
+    key === "ArrowDown"
+  ) {
+    return true;
+  }
+
+  var code = event.keyCode || event.which;
+
+  return code === 37 || code === 38 || code === 39 || code === 40;
+}
+
+function setupRemoteNavigation() {
+  document.addEventListener("keydown", function (event) {
+    if (!isArrowKeyEvent(event)) {
+      return;
+    }
+
+    if (event.repeat) {
+      return;
+    }
+
+    event.preventDefault();
+
+    if (state.viewMode === "main") {
+      setViewMode("chart");
+    } else {
+      setViewMode("main");
+    }
+  });
+}
+
 function init() {
+  setViewMode("main");
+  setupRemoteNavigation();
+
   var cached = loadFromCache();
 
   if (cached) {
     state.lastData = cached;
-    renderRecord(cached);
+    renderAll(cached);
     setStatus(true);
   } else {
     setStatus(false);
+    renderNoDataChart();
   }
 
   startUiTicker();
