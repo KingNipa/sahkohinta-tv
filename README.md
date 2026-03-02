@@ -3,9 +3,15 @@
 Kevyt sähkönhinnan seurantasivu Samsung Smart TV:n selaimeen.
 Sovellus on tehty mahdollisimman selkeäksi ja helposti luettavaksi ilman frameworkeja.
 
+## Smart TV -käyttö
+
+1. Avaa GitHub Pages -osoite TV:n selaimessa.
+2. Lisää sivu kirjanmerkiksi tai aloitusnäytön pikakuvakkeeksi selaimen valikosta.
+3. Kuvakkeena käytetään `icon.svg`-tiedostoa.
+
 ## Mitä ruudulla näkyy
 
-- nykyinen tunti muodossa `klo 12 - 13: hinta`
+- päivä ja nykyinen tunti muodossa `klo 12 - 13: hinta`
 - isolla nykyisen tunnin hinta (`snt/kWh`)
 - alarivillä päivän halvin, kallein ja keskihinta
 - vasemmassa alanurkassa `Päivitetty: HH:MM`
@@ -19,7 +25,6 @@ Sovellus on tehty mahdollisimman selkeäksi ja helposti luettavaksi ilman framew
   - halvin tunti näytetään vihreällä
   - kallein tunti näytetään punaisella
   - nykyinen tunti on korostettu
-  - akselien numerot on tehty tavallista isommiksi
 
 ## Datalähde
 
@@ -60,14 +65,6 @@ Oletuksena data haetaan suoraan julkisesta API:sta:
    ```text
    http://localhost:8080/
    ```
-
-
-## Samsung Smart TV -käyttö
-
-1. Avaa GitHub Pages -osoite TV:n selaimessa.
-2. Lisää sivu kirjanmerkiksi tai aloitusnäytön pikakuvakkeeksi selaimen valikosta.
-3. Kuvakkeena käytetään `icon.svg`-tiedostoa.
-
 ## Konfiguraatio
 
 `app.js`-tiedoston alussa:
