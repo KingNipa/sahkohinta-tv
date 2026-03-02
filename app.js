@@ -48,6 +48,51 @@ function formatHourRange(hour) {
   return "klo " + twoDigits(hour) + " - " + twoDigits(endHour);
 }
 
+function formatDateParts(year, month, day) {
+  return twoDigits(day) + "." + twoDigits(month) + "." + String(year);
+}
+
+function formatDateFromDayKey(dayKey) {
+  if (typeof dayKey !== "string") {
+    return null;
+  }
+
+  var parts = dayKey.split("-");
+
+  if (parts.length !== 3) {
+    return null;
+  }
+
+  var year = Number(parts[0]);
+  var month = Number(parts[1]);
+  var day = Number(parts[2]);
+
+  if (
+    !isFinite(year) ||
+    !isFinite(month) ||
+    !isFinite(day) ||
+    year < 2000 ||
+    month < 1 ||
+    month > 12 ||
+    day < 1 ||
+    day > 31
+  ) {
+    return null;
+  }
+
+  return formatDateParts(year, month, day);
+}
+
+function formatCurrentDate() {
+  var now = new Date();
+  return formatDateParts(now.getFullYear(), now.getMonth() + 1, now.getDate());
+}
+
+function getDisplayDateText(record) {
+  var dateFromData = formatDateFromDayKey(record && record.dayKey);
+  return dateFromData || formatCurrentDate();
+}
+
 function formatAxisTick(value) {
   var rounded = Math.round(value);
   var isInteger = Math.abs(value - rounded) < 0.001;
@@ -334,7 +379,7 @@ function renderRecord(record) {
   var summary = getSummary(record);
   var updateSource = isValidIso(record.fetchedAt) ? record.fetchedAt : record.updatedAt;
 
-  slotEl.textContent = formatHourRange(currentSlot.hour) + ": hinta";
+  slotEl.textContent = getDisplayDateText(record) + " " + formatHourRange(currentSlot.hour);
   priceEl.textContent = formatCents(currentSlot.centsPerKwh);
   updatedEl.textContent = "P\u00e4ivitetty: " + formatTime(updateSource);
 
