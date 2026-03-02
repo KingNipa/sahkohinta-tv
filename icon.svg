@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title">
+  <title id="title">Sähkönhinta TV - kuvake</title>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0f1828" />
+      <stop offset="100%" stop-color="#223754" />
+    </linearGradient>
+  </defs>
+  <rect x="24" y="24" width="464" height="464" rx="96" fill="url(#bg)"/>
+  <path d="M283 64L136 286h92l-33 162 181-250h-99l6-134z" fill="#ffd84d"/>
+</svg>
