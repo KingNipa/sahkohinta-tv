@@ -1,6 +1,10 @@
-const CONFIG = { endpoint: "./mock-price.json", refreshMs: 600000 };
+var CONFIG = {
+  endpoint: "https://api.spot-hinta.fi/Today",
+  refreshMs: 3600000,
+  uiTickMs: 30000
+};
 
-var STORAGE_KEY = "sahkohinta_tv_last_success_v2";
+var STORAGE_KEY = "sahkohinta_tv_last_success_v3";
 var state = { lastData: null };
 
 var slotEl = document.getElementById("slotText");
@@ -38,6 +42,26 @@ function formatTime(isoString) {
 function formatHourRange(hour) {
   var endHour = (hour + 1) % 24;
   return "klo " + twoDigits(hour) + " - " + twoDigits(endHour);
+}
+
+function getTimeMs(isoString) {
+  var date = new Date(isoString);
+
+  if (isNaN(date.getTime())) {
+    return 0;
+  }
+
+  return date.getTime();
+}
+
+function getLocalDateKey(date) {
+  return (
+    date.getFullYear() +
+    "-" +
+    twoDigits(date.getMonth() + 1) +
+    "-" +
+    twoDigits(date.getDate())
+  );
 }
 
 function isFiniteNumber(value) {
@@ -120,7 +144,91 @@ function makeSingleHourPrice(centsPerKwh) {
   ];
 }
 
-function buildRecord(rawData, fetchedAtOverride) {
+function buildRecordFromSpotArray(rows, fetchedAtOverride) {
+  if (!Array.isArray(rows)) {
+    return null;
+  }
+
+  var todayKey = getLocalDateKey(new Date());
+  var buckets = {};
+  var latestMs = 0;
+  var i;
+
+  for (i = 0; i < rows.length; i += 1) {
+    var row = rows[i];
+
+    if (!row || typeof row !== "object") {
+      continue;
+    }
+
+    if (!isValidIso(row.DateTime)) {
+      continue;
+    }
+
+    var rowDate = new Date(row.DateTime);
+
+    if (getLocalDateKey(rowDate) !== todayKey) {
+      continue;
+    }
+
+    var hour = rowDate.getHours();
+    var priceEuro = isFiniteNumber(row.PriceWithTax) ? row.PriceWithTax : row.PriceNoTax;
+
+    if (!isFiniteNumber(priceEuro)) {
+      continue;
+    }
+
+    var cents = priceEuro * 100;
+
+    if (!buckets[hour]) {
+      buckets[hour] = { sum: 0, count: 0 };
+    }
+
+    buckets[hour].sum += cents;
+    buckets[hour].count += 1;
+
+    if (rowDate.getTime() > latestMs) {
+      latestMs = rowDate.getTime();
+    }
+  }
+
+  var hours = Object.keys(buckets)
+    .map(function (key) {
+      return Number(key);
+    })
+    .sort(function (a, b) {
+      return a - b;
+    });
+
+  var hourlyPrices = [];
+
+  for (i = 0; i < hours.length; i += 1) {
+    var hourKey = hours[i];
+    var bucket = buckets[hourKey];
+
+    if (bucket.count > 0) {
+      hourlyPrices.push({
+        hour: hourKey,
+        centsPerKwh: bucket.sum / bucket.count
+      });
+    }
+  }
+
+  if (hourlyPrices.length === 0) {
+    return null;
+  }
+
+  var nowIso = new Date().toISOString();
+
+  return {
+    updatedAt: latestMs > 0 ? new Date(latestMs).toISOString() : nowIso,
+    fetchedAt: fetchedAtOverride || nowIso,
+    dayKey: todayKey,
+    hourlyPrices: hourlyPrices
+  };
+}
+
+function buildRecordFromLegacy(rawData, fetchedAtOverride) {
   if (!rawData || typeof rawData !== "object") {
     return null;
   }
@@ -136,12 +244,24 @@ function buildRecord(rawData, fetchedAtOverride) {
   }
 
   var nowIso = new Date().toISOString();
+  var updatedAt = isValidIso(rawData.updatedAt) ? rawData.updatedAt : nowIso;
 
   return {
-    updatedAt: isValidIso(rawData.updatedAt) ? rawData.updatedAt : nowIso,
+    updatedAt: updatedAt,
     fetchedAt: isValidIso(rawData.fetchedAt) ? rawData.fetchedAt : (fetchedAtOverride || nowIso),
+    dayKey: typeof rawData.dayKey === "string" ? rawData.dayKey : getLocalDateKey(new Date(updatedAt)),
     hourlyPrices: hourlyPrices
   };
+}
+
+function buildRecord(rawData, fetchedAtOverride) {
+  var spotRecord = buildRecordFromSpotArray(rawData, fetchedAtOverride);
+
+  if (spotRecord) {
+    return spotRecord;
+  }
+
+  return buildRecordFromLegacy(rawData, fetchedAtOverride);
 }
 
 function getCurrentSlot(record) {
@@ -267,17 +387,49 @@ function fetchLatest() {
     });
 }
 
+function scheduleRefresh(cachedRecord) {
+  var initialDelayMs = 0;
+  var todayKey = getLocalDateKey(new Date());
+
+  if (
+    cachedRecord &&
+    cachedRecord.dayKey === todayKey &&
+    isValidIso(cachedRecord.fetchedAt)
+  ) {
+    var elapsedMs = Date.now() - getTimeMs(cachedRecord.fetchedAt);
+
+    if (elapsedMs >= 0 && elapsedMs < CONFIG.refreshMs) {
+      initialDelayMs = CONFIG.refreshMs - elapsedMs;
+    }
+  }
+
+  setTimeout(function () {
+    fetchLatest();
+    setInterval(fetchLatest, CONFIG.refreshMs);
+  }, initialDelayMs);
+}
+
+function startUiTicker() {
+  setInterval(function () {
+    if (state.lastData) {
+      renderRecord(state.lastData);
+    }
+  }, CONFIG.uiTickMs);
+}
+
 function init() {
   var cached = loadFromCache();
 
   if (cached) {
     state.lastData = cached;
     renderRecord(cached);
+    setStatus(true);
+  } else {
     setStatus(false);
   }
 
-  fetchLatest();
-  setInterval(fetchLatest, CONFIG.refreshMs);
+  startUiTicker();
+  scheduleRefresh(cached);
 }
 
 init();
