@@ -61,24 +61,6 @@ Oletuksena data haetaan suoraan julkisesta API:sta:
    http://localhost:8080/
    ```
 
-## Julkaisu GitHub Pagesiin (main + root)
-
-1. Pushaa muutokset:
-   ```bash
-   git add .
-   git commit -m "Päivitä sovellus"
-   git push origin main
-   ```
-2. Avaa GitHubissa `Settings` -> `Pages`.
-3. Valitse:
-   - `Source`: `Deploy from a branch`
-   - `Branch`: `main`
-   - `Folder`: `/(root)`
-4. Tallenna.
-5. Sivun osoite:
-   ```text
-   https://<username>.github.io/<repo>/
-   ```
 
 ## Samsung Smart TV -käyttö
 
@@ -102,12 +84,10 @@ var CONFIG = {
 - `refreshMs`: verkkohaun väli millisekunteina (`3600000` = 1 h)
 - `uiTickMs`: paikallisen UI-päivityksen väli (ei verkkohakua)
 
-## Kehitys mock-datalla
-
-Jos haluat testata ilman nettiä, vaihda `endpoint` väliaikaisesti:
+Mikäli haluut testata ilman nettiä, vaihda `endpoint` väliaikaisesti:
 
 ```js
 endpoint: "./mock-price.json"
 ```
 
-Sovellus tukee myös mock-tiedoston aiempaa tuntihintamuotoa.
+Sovellus tukee myös mock-tiedoston tuntihintamuotoa testausta varten.
